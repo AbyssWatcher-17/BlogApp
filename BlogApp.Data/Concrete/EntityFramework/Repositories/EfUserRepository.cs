@@ -12,8 +12,9 @@ namespace BlogApp.Data.Concrete.EntityFramework.Repositories
 {
     public class EfUserRepository : EfEntityRepositoryBase<User>, IUserRepository
     {
-        public EfRoleRepository(DbContext context) : base(context)
+        public EfUserRepository(DbContext context) : base(context)
         {
+
         }
     }
 }

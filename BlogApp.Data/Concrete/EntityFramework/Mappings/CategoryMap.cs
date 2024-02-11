@@ -28,6 +28,49 @@ namespace BlogApp.Data.Concrete.EntityFramework.Mappings
             builder.Property(c => c.IsDeleted).IsRequired();
             builder.Property(c => c.Note).HasMaxLength(500);
             builder.ToTable("Categories");
+
+            builder.HasData(
+                new Category
+                {
+                    Id = 1,
+                    Name = ".NET C#",
+                    Description = "Info about C# programming language and .NET ecosystem",
+                    IsActive = true,
+                    IsDeleted = true,
+                    CreatedByName = "InitialCreate",
+                    CreatedDate = DateTime.Now,
+                    ModifiedByName = "InitialCreate",
+                    ModifiedDate = DateTime.Now,
+                    Note = "C# and .NET Blog Category",
+                },
+                                new Category
+                                {
+                                    Id = 2,
+                                    Name = "C++",
+                                    Description = "Info about C++ programming language ",
+                                    IsActive = true,
+                                    IsDeleted = true,
+                                    CreatedByName = "InitialCreate",
+                                    CreatedDate = DateTime.Now,
+                                    ModifiedByName = "InitialCreate",
+                                    ModifiedDate = DateTime.Now,
+                                    Note = "C++ Blog Category",
+                                },
+
+                                new Category
+                                {
+                                    Id = 3,
+                                    Name = "JavaScript",
+                                    Description = "Info about JS programming language ",
+                                    IsActive = true,
+                                    IsDeleted = true,
+                                    CreatedByName = "InitialCreate",
+                                    CreatedDate = DateTime.Now,
+                                    ModifiedByName = "InitialCreate",
+                                    ModifiedDate = DateTime.Now,
+                                    Note = "JS Blog Category",
+                                }
+            );
         }
     }
 }
