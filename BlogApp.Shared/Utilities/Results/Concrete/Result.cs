@@ -1,4 +1,5 @@
-﻿using BlogApp.Shared.Utilities.Results.ComplexTypes;
+﻿using BlogApp.Shared.Utilities.Results.Abstract;
+using BlogApp.Shared.Utilities.Results.ComplexTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlogApp.Shared.Utilities.Results.Concrete
 {
-    public class Result
+    public class Result : IResult
     {
 
         public Result(ResultStatus resultStatus)
