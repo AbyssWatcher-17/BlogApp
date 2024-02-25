@@ -1,4 +1,5 @@
-﻿using BlogApp.Data.Abstract;
+﻿using AutoMapper;
+using BlogApp.Data.Abstract;
 using BlogApp.Entities.Concrete;
 using BlogApp.Entities.Dtos;
 using BlogApp.Services.Abstract;
@@ -16,20 +17,37 @@ namespace BlogApp.Services.Concrete
     public class ArticleManager : IArticleService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ArticleManager(IUnitOfWork unitOfWork)
+        public ArticleManager(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork; 
+            _mapper = mapper;
         }
 
-        public Task<IResult> Add(ArticleAddDto categoryAddDto, string createdByName)
+        public async Task<IResult> Add(ArticleAddDto articleAddDto, string createdByName)
         {
-            throw new NotImplementedException();
+            var article = _mapper.Map<Article>(articleAddDto);
+            article.CreatedByName = createdByName;
+            article.ModifiedByName = createdByName;
+            article.UserId = 1;
+            await _unitOfWork.Articles.AddAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+            return new Result(ResultStatus.Success, $"{articleAddDto.Title} named Article added successfully ");
         }
 
-        public Task<IResult> Delete(int categoryId)
+        public async Task<IResult> Delete(int articleId,string modifiedByName)
         {
-            throw new NotImplementedException();
+            var result = await _unitOfWork.Articles.AnyAsync(a => a.Id == articleId);
+            if(result)
+            {
+                var article = await _unitOfWork.Articles.GetAsync(a => a.Id == articleId);
+                article.IsDeleted = true;
+                article.ModifiedByName = modifiedByName;
+                article.ModifiedDate = DateTime.Now;
+                await _unitOfWork.Articles.UpdateAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+                return new Result(ResultStatus.Success, $"{article.Title} named Article deleted successfully ");
+            }
+            return new Result(ResultStatus.Error, "No Article found ");
         }
 
         public async Task<IDataResult<ArticleDto>> Get(int articleId)
@@ -112,19 +130,19 @@ namespace BlogApp.Services.Concrete
 
         }
 
-        public Task<IResult> HardDelete(int categoryId)
+        public async Task<IResult> HardDelete(int articleId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> Update(ArticleUpdateDto categoryAddDto, string modifiedByName)
+        public async Task<IResult> Update(ArticleUpdateDto articleUpdateDto, string modifiedByName)
         {
-            throw new NotImplementedException();
+            var article = _mapper.Map<Article>(articleUpdateDto);
+            article.ModifiedByName = modifiedByName;
+            await _unitOfWork.Articles.UpdateAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+            return new Result(ResultStatus.Success,$"{articleUpdateDto.Title} named Article added succesfully");
         }
 
-        Task<IDataResult<Article>> IArticleService.Get(int articleId)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

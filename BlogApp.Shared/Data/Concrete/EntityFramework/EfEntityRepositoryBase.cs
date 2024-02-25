@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 //using System.Data.Entity;
 using BlogApp.Shared.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
+// Ef = Entity Framework
 
 namespace BlogApp.Shared.Data.Abstact.Concrete.EntityFramework
 {
